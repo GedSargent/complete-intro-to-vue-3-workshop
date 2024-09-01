@@ -5,62 +5,83 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playground — Complete Intro to Vue 3</title>
+    <!-- Tailwind CSS playground link -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1>Hello Frontend Masters!</h1>
+  <body class="bg-slate-950 text-slate-50">
     <div id="app">
-      <p v-if="message.length % 2 === 0">Even: {{ message.toUpperCase() }}</p>
-      <p v-else>Odd: {{ message }}</p>
-      <ul v-for="item in listOfNumbers">
-        <li>
-          {{ item.id }}
-          <ul>
-            <li v-for="number in item.list">{{ number }}</li>
-          </ul>
-        </li>
-      </ul>
+      <div class="container mx-auto p-4">
+        <h1 class="text-6xl font-bold">Star Wars</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4">
+          <div v-for="character in characters" :key="character.id">
+            <div class="bg-slate-800 p-8 rounded-lg">
+              <img
+                :src="character.image"
+                alt="Character Image"
+                class="w-full h-96 object-cover rounded-lg md:h-64"
+              />
+              <h2 class="text-2xl font-bold mt-4">{{ character.name }}</h2>
+              <ul class="mt-2">
+                <li v-for="ability in character.abilities" :key="ability">
+                  {{ ability }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script>
-      const { createApp } = Vue
+    <script type="module">
+      const { createApp } = Vue;
 
       const app = createApp({
         data() {
           return {
-            message: 'Hello it works',
-            listOfNumbers: [
+            characters: [
               {
-                name: 1,
-                id: '6a887cd2-f0bf-4321-b192-92016f82a883',
-                list: [1, 2, 3]
+                name: "Luke Skywalker",
+                id: "6a887cd2-f0bf-4321-b192-92016f82a883",
+                abilities: ["Force Push", "Force Jump"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/1.jpg",
               },
               {
-                name: 2,
-                id: '8d14d90b-2d47-473e-8293-d5c324111d0d',
-                list: [1, 2, 3]
+                name: "Darth Vader",
+                id: "8d14d90b-2d47-473e-8293-d5c324111d0d",
+                abilities: ["Force Choke", "Force Lightning"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/4.jpg",
               },
               {
-                name: 3,
-                id: 'cd806d65-2309-4625-9104-dcd636cd79b5',
-                list: [1, 2, 3]
+                name: "Princess Leia",
+                id: "cd806d65-2309-4625-9104-dcd636cd79b5",
+                abilities: ["Blaster", "Leadership"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/5.jpg",
               },
               {
-                name: 4,
-                id: '00c939cd-fbf4-46d0-8e61-0bc2ce8a5332',
-                list: [1, 2, 3]
+                name: "Han Solo",
+                id: "00c939cd-fbf4-46d0-8e61-0bc2ce8a5332",
+                abilities: ["Blaster", "Piloting"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/14.jpg",
               },
               {
-                name: 5,
-                id: '295a8170-59c1-4462-9de1-3c9cd41cedab',
-                list: [1, 2, 3]
-              }
-            ]
-          }
-        }
-      })
+                name: "Chewbacca",
+                id: "295a8170-59c1-4462-9de1-3c9cd41cedab",
+                abilities: ["Strength", "Bowcaster"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/13.jpg",
+              },
+            ],
+          };
+        },
+      });
 
-      app.mount('#app')
+      app.mount("#app");
     </script>
   </body>
 </html>
