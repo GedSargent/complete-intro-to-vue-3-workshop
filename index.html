@@ -19,7 +19,10 @@
           <h2 class="text-3xl mb-8">Add a character</h2>
 
           <div>
+            <!-- Name -->
             <label class="block mb-4" for="characterName">Name</label>
+            <!-- v-model is a directive that binds the input value to the data property -->
+            <!-- It saves us having to write separate handler functions and bind values -->
             <input
               id="characterName"
               class="py-2 px-4 bg-slate-800 text-slate-50 rounded-lg w-full mb-4"
@@ -39,14 +42,13 @@
                 placeholder="Enter character ability"
                 v-model="newCharacterAbility"
               />
+              <!-- @click.prevent is a shorthand for @click and .prevent -->
+              <!-- It prevents the default form submission when the button is clicked -->
+              <!-- @keyup.enter is a shorthand for @keyup and .enter -->
+              <!-- It allows the user to submit the form by pressing the Enter key -->
               <button
-                @click.prevent="
-                  newCharacterAbilitiesList = [
-                    ...newCharacterAbilitiesList,
-                    newCharacterAbility,
-                  ];
-                  newCharacterAbility = '';
-                "
+                @click.prevent="addNewCharacterAbility"
+                @keyup.enter="addNewCharacterAbility"
                 class="bg-slate-700 text-slate-50 py-2 px-4 rounded-lg"
               >
                 Add Ability
@@ -104,7 +106,7 @@
                 @click="addToFavourites(character)"
                 class="mt-4 bg-slate-700 text-slate-50 py-2 px-4 rounded-lg"
               >
-                Add to Favourites
+                🌟 Favourite
               </button>
             </div>
           </div>
@@ -140,6 +142,12 @@
                     {{ ability }}
                   </li>
                 </ul>
+                <button
+                  @click="removeFromFavourites(favouriteCharacter.id)"
+                  class="mt-4 bg-red-900/50 text-slate-50 py-2 px-4 rounded-lg hover:bg-red-900/80"
+                >
+                  ⛔️ Remove
+                </button>
               </div>
             </div>
           </div>
@@ -204,6 +212,15 @@
               character,
             ];
           },
+          addNewCharacterAbility() {
+            if (!this.newCharacterAbility) return;
+
+            this.newCharacterAbilitiesList = [
+              ...this.newCharacterAbilitiesList,
+              this.newCharacterAbility,
+            ];
+            this.newCharacterAbility = "";
+          },
           addCharacter(event) {
             event.preventDefault();
 
@@ -219,6 +236,13 @@
 
             this.newCharacterName = "";
             this.newCharacterAbilitiesList = [];
+          },
+          removeFromFavourites(characterId) {
+            console.log({ characterId });
+
+            this.favouriteCharactersList = this.favouriteCharactersList.filter(
+              (character) => character.id !== characterId
+            );
           },
         },
       });
