@@ -13,6 +13,38 @@
       <div class="container mx-auto py-16 px-4">
         <h1 class="text-6xl font-bold mb-8">Star Wars</h1>
 
+        <h3 class="text-3xl font-bold mb-4">{{ count }}</h3>
+        <div class="flex gap-4">
+          <div>
+            <label
+              class="text-slate-400 block mb-1"
+              for="incrementAmountTraditional"
+              >Traditional Increment Amount</label
+            >
+            <input
+              id="incrementAmountTraditional"
+              class="py-2 px-4 bg-slate-800 text-slate-50 rounded-lg"
+              type="number"
+              v-bind:value="incrementAmount"
+              @input="changeIncrementAmount"
+            />
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1" for="incrementAmountModel"
+              >Model Increment Amount</label
+            >
+            <input
+              id="incrementAmountModel"
+              class="py-2 px-4 bg-slate-800 text-slate-50 rounded-lg"
+              type="number"
+              v-model="incrementAmount"
+            />
+          </div>
+          <button @click="incrementCount" class="mt-2">Increment</button>
+        </div>
+
+        <h2 class="text-3xl my-8">Characters</h2>
+
         <div v-if="characterList.length === 0">
           <p class="text-2xl">No characters found. Please check back later.</p>
         </div>
@@ -46,6 +78,8 @@
       const app = createApp({
         data() {
           return {
+            count: 0,
+            incrementAmount: 20,
             characterList: [
               {
                 name: "Luke Skywalker",
@@ -83,7 +117,16 @@
                   "https://starwars-visualguide.com/assets/img/characters/13.jpg",
               },
             ],
+            favouriteCharactersList: [],
           };
+        },
+        methods: {
+          incrementCount() {
+            this.count += this.incrementAmount;
+          },
+          changeIncrementAmount(event) {
+            this.incrementAmount = Number(event.target.value);
+          },
         },
       });
 

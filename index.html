@@ -4,7 +4,226 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Playground — Complete Intro to Vue 3</title>
+    <!-- Tailwind CSS playground link -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body></body>
+  <body class="bg-slate-950 text-slate-50">
+    <div id="app">
+      <div class="container mx-auto py-16 px-4">
+        <h1 class="text-6xl font-bold mb-8">Star Wars</h1>
+
+        <h2 class="text-3xl my-8">Characters</h2>
+
+        <form class="bg-white/5 p-8 mb-8 rounded-lg" @submit="addCharacter">
+          <h2 class="text-3xl mb-8">Add a character</h2>
+
+          <div>
+            <label class="block mb-4" for="characterName">Name</label>
+            <input
+              id="characterName"
+              class="py-2 px-4 bg-slate-800 text-slate-50 rounded-lg w-full mb-4"
+              type="text"
+              placeholder="Enter character name"
+              v-model="newCharacterName"
+            />
+          </div>
+
+          <div class="flex gap-8">
+            <div class="w-1/2">
+              <label class="block mb-4" for="characterAbility">Abilities</label>
+              <input
+                id="characterAbility"
+                class="py-2 px-4 bg-slate-800 text-slate-50 rounded-lg w-full mb-4"
+                type="text"
+                placeholder="Enter character ability"
+                v-model="newCharacterAbility"
+              />
+              <button
+                @click.prevent="
+                  newCharacterAbilitiesList = [
+                    ...newCharacterAbilitiesList,
+                    newCharacterAbility,
+                  ];
+                  newCharacterAbility = '';
+                "
+                class="bg-slate-700 text-slate-50 py-2 px-4 rounded-lg"
+              >
+                Add Ability
+              </button>
+            </div>
+            <div class="w-1/2">
+              <h3 class="text-2xl mb-4">Abilities List</h3>
+              <p
+                v-if="newCharacterAbilitiesList.length === 0"
+                class="text-slate-400"
+              >
+                Please add some abilities for your new character...
+              </p>
+              <ul class="flex flex-wrap gap-2" v-else>
+                <li
+                  v-for="ability in newCharacterAbilitiesList"
+                  :key="ability"
+                  class="rounded-full font-sm bg-slate-800 px-3 py-1"
+                >
+                  {{ ability }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="mt-8 bg-emerald-700 text-slate-50 py-2 px-4 rounded-lg w-full"
+          >
+            Add Character
+          </button>
+        </form>
+
+        <div v-if="characterList.length === 0">
+          <p class="text-2xl">No characters found. Please check back later.</p>
+        </div>
+        <div
+          v-else
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4"
+        >
+          <div v-for="character in characterList" :key="character.id">
+            <div class="bg-white/10 p-8 rounded-lg">
+              <img
+                :src="character.image ? character.image : defaultImage"
+                alt="Character Image"
+                class="w-full h-96 object-cover rounded-lg md:h-64"
+              />
+              <h2 class="text-2xl font-bold mt-4">{{ character.name }}</h2>
+              <ul class="mt-2">
+                <li v-for="ability in character.abilities" :key="ability">
+                  {{ ability }}
+                </li>
+              </ul>
+              <button
+                @click="addToFavourites(character)"
+                class="mt-4 bg-slate-700 text-slate-50 py-2 px-4 rounded-lg"
+              >
+                Add to Favourites
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-emerald-950 p-16 mt-8 rounded-lg">
+          <h2 class="text-3xl mb-8">Favourite Characters</h2>
+          <div v-if="favouriteCharactersList.length === 0" class="text-2xl">
+            <p>No favourite characters found. Please add some.</p>
+          </div>
+          <div
+            v-else
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-4"
+          >
+            <div
+              v-for="favouriteCharacter in favouriteCharactersList"
+              :key="favouriteCharacter.id"
+            >
+              <div class="bg-white/5 p-8 rounded-lg">
+                <img
+                  :src="favouriteCharacter.image ? favouriteCharacter.image : defaultImage"
+                  alt="Character Image"
+                  class="w-full h-96 object-cover rounded-lg md:h-64"
+                />
+                <h2 class="text-2xl font-bold mt-4">
+                  {{ favouriteCharacter.name }}
+                </h2>
+                <ul class="mt-2">
+                  <li
+                    v-for="ability in favouriteCharacter.abilities"
+                    :key="ability"
+                  >
+                    {{ ability }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="module">
+      const { createApp } = Vue;
+
+      const app = createApp({
+        data() {
+          return {
+            defaultImage: `https://starwars-visualguide.com/assets/img/films/1.jpg`,
+            newCharacterName: "",
+            newCharacterAbility: "",
+            newCharacterAbilitiesList: [],
+            characterList: [
+              {
+                name: "Luke Skywalker",
+                id: "6a887cd2-f0bf-4321-b192-92016f82a883",
+                abilities: ["Force Push", "Force Jump"],
+                image: `https://starwars-visualguide.com/assets/img/characters/1.jpg`,
+              },
+              {
+                name: "Darth Vader",
+                id: "8d14d90b-2d47-473e-8293-d5c324111d0d",
+                abilities: ["Force Choke", "Force Lightning"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/4.jpg",
+              },
+              {
+                name: "Princess Leia",
+                id: "cd806d65-2309-4625-9104-dcd636cd79b5",
+                abilities: ["Blaster", "Leadership"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/5.jpg",
+              },
+              {
+                name: "Han Solo",
+                id: "00c939cd-fbf4-46d0-8e61-0bc2ce8a5332",
+                abilities: ["Blaster", "Piloting"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/14.jpg",
+              },
+              {
+                name: "Chewbacca",
+                id: "295a8170-59c1-4462-9de1-3c9cd41cedab",
+                abilities: ["Strength", "Bowcaster"],
+                image:
+                  "https://starwars-visualguide.com/assets/img/characters/13.jpg",
+              },
+            ],
+            favouriteCharactersList: [],
+          };
+        },
+        methods: {
+          addToFavourites(character) {
+            this.favouriteCharactersList = [
+              ...this.favouriteCharactersList,
+              character,
+            ];
+          },
+          addCharacter(event) {
+            event.preventDefault();
+
+            this.characterList = [
+              ...this.characterList,
+              {
+                name: this.newCharacterName,
+                id: Math.random().toString(36).substr(2, 9),
+                abilities: this.newCharacterAbilitiesList,
+                image: this.defaultImage,
+              },
+            ];
+
+            this.newCharacterName = "";
+            this.newCharacterAbilitiesList = [];
+          },
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
 </html>
